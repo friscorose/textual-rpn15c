@@ -1,0 +1,41 @@
+#buttons {
+    layout: grid;
+    grid-size: 10;
+    grid-rows: 1fr 1fr 1fr 1fr;
+    border-subtitle-align: left;
+}
+
+#enter {
+    row-span: 2;
+}
+
+Button {
+    padding: 0;
+    min-width: 9;
+    color: white;
+#    background: $surface-darken-1;
+
+    border-title-align: center;
+    border-title-color: $secondary;
+    border-title-style: bold;
+#    border-title-background: $surface;
+
+    border-subtitle-align: center;
+    border-subtitle-color: $primary-lighten-3;
+    border-subtitle-style: bold;
+    border-subtitle-background: $surface-darken-2;
+
+    &:focus {
+        text-style: bold;
+    }
+
+    & #shift-f {
+        background: $secondary;
+    }
+
+    & #shift-g {
+        background: $primary-lighten-3;
+    }
+}
+
+
