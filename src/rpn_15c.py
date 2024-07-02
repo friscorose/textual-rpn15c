@@ -24,7 +24,7 @@ class HP_Button( Static ):
     """
 
     def compose(self) -> ComposeResult:
-        self.hp_button = Button( self.label, id="the_button" )
+        self.hp_button = Button( self.label, id=self.id )
         self.hp_button.border_title = self.f_label
         self.hp_button.border_subtitle = self.g_label
         yield self.hp_button
@@ -37,7 +37,10 @@ class RPN_CalculatorApp(App):
         """Add our buttons."""
         with Container(id="calculator"):
             yield Digits("0.0", id="numbers")
-            with Container(id="buttons"):
+            calc_buttons =  Container(id="buttons")
+            #calc_buttons.border_subtitle = "HEWLETT•PACKARD"
+            calc_buttons.border_subtitle = "L A U T X E T • B A C K W A R D"
+            with calc_buttons:
                 yield HP_Button("√x", "A", "x²", id="sqrt-x")
                 yield HP_Button("eˣ", "B", "LN", id="exp-x")
                 yield HP_Button("10ˣ", "C", "LOG", id="ten-x")
@@ -63,7 +66,7 @@ class RPN_CalculatorApp(App):
                 yield HP_Button("R↓", "PRGM", "R↑", id="r-down")
                 yield HP_Button("x≷y", "REG", "RND", id="x-swap-y")
                 yield HP_Button("←", "PREFIX", "CLx", id="backspace")
-                yield HP_Button("ENTER", "RAN #", "LSTx", id="enter")
+                yield HP_Button("E\nN\nT\nE\nR", "RAN #", "LSTx", id="enter")
                 yield HP_Button("1", "→R", "→P", id="digit-1")
                 yield HP_Button("2", "→H.MS", "→H", id="digit-2")
                 yield HP_Button("3", "→RAD", "→DEG", id="digit-3")
@@ -79,7 +82,7 @@ class RPN_CalculatorApp(App):
                 yield HP_Button("+", "Py,x", "Cy,x", id="addition")
 
     def on_mount(self) -> None:
-        self.query_one("#buttons").border_subtitle = "HEWLETT•PACKARD"
+        pass
 
 if __name__ == "__main__":
     RPN_CalculatorApp().run()
