@@ -9,6 +9,23 @@
     padding-left: 2;
 }
 
+#enter {
+    height: 7;
+    row-span: 2;
+}
+
+#shift-f {
+    background: $secondary-darken-1;
+    color: black;
+    border-subtitle-background: $secondary-darken-3;
+}
+
+#shift-g {
+    background: $primary-lighten-3;
+    color: black;
+    border-subtitle-background: $primary-lighten-2;
+}
+
 Button {
     padding: 0;
     min-width: 9;
@@ -23,24 +40,11 @@ Button {
     border-subtitle-align: center;
     border-subtitle-color: $primary-lighten-3;
     border-subtitle-style: bold;
-    border-subtitle-background: $surface-darken-2;
+    border-subtitle-background: $surface-darken-1;
 
     &:focus {
         text-style: bold;
     }
-
-    & #shift-f {
-        background: $secondary;
-    }
-
-    & #shift-g {
-        background: $primary-lighten-3;
-    }
-}
-
-#enter {
-    height: 2;
-    row-span: 2;
 }
 
 
