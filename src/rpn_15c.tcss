@@ -1,3 +1,39 @@
+#upper {
+    height: 10;
+    width: 122;
+    background:seashell;
+    margin-left: 2;
+    margin-right: 2;
+}
+
+#bezel {
+    height: 7;
+    width:45;
+    background:silver;
+    padding: 1;
+    margin-top: 2;
+    margin-left: 16;
+}
+
+#numbers {
+    width: 43;
+    border-top: tall slategray;
+}
+
+#status {
+    width: 43;
+    padding-left: 3;
+}
+
+.lcd{
+    color: black;
+    background: lightslategray;
+}
+
+.lcd Label {
+    margin-left: 2;
+}
+
 #buttons {
     height: 19;
     width: 122;
@@ -7,6 +43,8 @@
     border-subtitle-align: left;
     padding-top: 1;
     padding-left: 2;
+    margin-left: 2;
+    margin-right: 2;
 }
 
 #enter {
