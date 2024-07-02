@@ -48,7 +48,7 @@
 }
 
 #enter {
-    height: 7;
+    background: blue;
     row-span: 2;
 }
 

@@ -9,7 +9,7 @@ looks like a real calculator.
 
 from textual import events, on
 from textual.app import App, ComposeResult
-from textual.containers import Container, Horizontal, Vertical
+from textual.containers import Container, Horizontal, Vertical, Grid
 from textual.reactive import var
 from textual.widgets import Button, Digits, Label, Static
 
@@ -19,13 +19,13 @@ class HP_Button( Static ):
         self.f_label = f_label
         self.g_label = g_label
         self.eid = id
-        super().__init__()
+        super().__init__(id="i"+id)
 
     def compose(self) -> ComposeResult:
-        self.hp_button = Button( self.label, id=self.eid )
-        self.hp_button.border_title = self.f_label
-        self.hp_button.border_subtitle = self.g_label
-        yield self.hp_button
+        hp_button = Button( self.label, id=self.eid )
+        hp_button.border_title = self.f_label
+        hp_button.border_subtitle = self.g_label
+        yield hp_button
 
 
 class RPN_CalculatorApp(App):
@@ -50,7 +50,7 @@ class RPN_CalculatorApp(App):
                 with Vertical(id="logo"):
                     yield Label("help", id="rpn-help")
                     yield Label("15C", id="rpn-model")
-            calc_buttons =  Container(id="buttons")
+            calc_buttons =  Grid(id="buttons")
             #calc_buttons.border_subtitle = "HEWLETT•PACKARD"
             calc_buttons.border_subtitle = "L A U T X E T • B A C K W A R D"
             with calc_buttons:

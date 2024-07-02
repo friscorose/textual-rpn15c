@@ -1,0 +1,10 @@
+#buttons {
+    grid-size: 10 4;
+}
+
+#z {
+    background: blue;
+    height: 100%;
+    row-span: 2;
+}
+
