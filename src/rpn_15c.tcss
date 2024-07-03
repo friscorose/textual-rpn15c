@@ -37,10 +37,30 @@
 
 #logo {
     height: 6;
-    width: 13;
+    width: 12;
     border: round black;
     margin-left: 47;
+    align: center middle;
 }
+
+#rpn-make {
+    color: silver;
+    background: black;
+    border-left: thick black;
+    border-right: thick black;
+    padding-left: 1;
+    padding-right: 1;
+    margin-left: 1;
+}
+
+#rpn-model {
+    color: black;
+    border: round black;
+    align: center middle;
+    padding-left: 1;
+    padding-right: 1;
+}
+
 #buttons {
     height: 19;
     width: 122;

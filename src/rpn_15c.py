@@ -42,8 +42,8 @@ class RPN_CalculatorApp(App):
                         yield Label( "C", id="c-state", classes="lcd")
                         yield Label( "PRGM", id="prgm-state", classes="lcd")
                 with Vertical(id="logo"):
-                    yield Label("hp", id="rpn-help")
-                    yield Label("15C", id="rpn-model")
+                    yield Label("hp", id="rpn-make")
+                    yield Label("15 C", id="rpn-model")
             calc_buttons =  Grid(id="buttons")
             calc_buttons.border_subtitle = " H   E   W   L   E   T   T  •  P   A   C   K   A   R   D "
             with calc_buttons:
