@@ -42,11 +42,10 @@ class RPN_CalculatorApp(App):
                         yield Label( "C", id="c-state", classes="lcd")
                         yield Label( "PRGM", id="prgm-state", classes="lcd")
                 with Vertical(id="logo"):
-                    yield Label("help", id="rpn-help")
+                    yield Label("hp", id="rpn-help")
                     yield Label("15C", id="rpn-model")
             calc_buttons =  Grid(id="buttons")
-            calc_buttons.border_subtitle = "H E W L E T T • P A C K A R D"
-            #calc_buttons.border_subtitle = "L A U T X E T • B A C K W A R D"
+            calc_buttons.border_subtitle = " H   E   W   L   E   T   T  •  P   A   C   K   A   R   D "
             with calc_buttons:
                 yield HP_Button("√x", "A", "  x²   ", id="sqrt-x")
                 yield HP_Button("eˣ", "B", "  LN   ", id="exp-x")
@@ -69,10 +68,13 @@ class RPN_CalculatorApp(App):
                 yield HP_Button("6", "ISG", "  F ?  ", id="digit-6")
                 yield HP_Button("×", "∫ᵧˣ", "  x=0  ", id="multiplication")
                 yield HP_Button("R/S", "PSE", "  P/R  ", id="rtos")
-                yield HP_Button("GSB", "Σ", "  RTN  ", id="gsb")
-                yield HP_Button("R↓", "PRGM", "  R↑  ", id="r-down")
-                yield HP_Button("x ≷ y", "REG", "  RND  ", id="x-swap-y")
-                yield HP_Button("←", " PREFIX", "  CLx  ", id="backspace")
+                clear_cluster =  Grid(id="cluster")
+                clear_cluster.border_title = "╭───────────────── CLEAR ──────────────────╮  "
+                with clear_cluster:
+                    yield HP_Button("GSB", "Σ", "  RTN  ", id="gsb")
+                    yield HP_Button("R↓", "PRGM", "  R↑  ", id="r-down")
+                    yield HP_Button("x ≷ y", "REG", "  RND  ", id="x-swap-y")
+                    yield HP_Button("←", " PREFIX", "  CLx  ", id="backspace")
                 yield HP_Button("E\nN\nT\nE\nR", " RAN # ", " LSTx  ", id="enter")
                 yield HP_Button("1", "→ R", "  → P  ", id="digit-1")
                 yield HP_Button("2", "→H.MS", "  → H  ", id="digit-2")

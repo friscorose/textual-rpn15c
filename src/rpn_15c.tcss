@@ -1,7 +1,7 @@
 #upper {
     height: 10;
     width: 122;
-    border-top: panel white;
+    border-top: panel white 80%;
     background:silver;
     padding-top: 1;
     margin-left: 2;
@@ -62,12 +62,21 @@
     background: $secondary-darken-1;
     color: black;
     border-subtitle-background: $secondary-darken-3;
+    border-top: inner $secondary-darken-1;
+    border-bottom: thick $secondary-darken-3;
 }
 
 #shift-g {
     background: $primary-lighten-3;
     color: black;
     border-subtitle-background: $primary-lighten-2;
+    border-top: inner $primary-lighten-3;
+    border-bottom: thick $primary-lighten-2;
+}
+
+#on {
+    border-top: heavy $panel-lighten-2;
+    border-bottom: tall $panel-darken-3;
 }
 
 Button {
@@ -76,11 +85,13 @@ Button {
     color: white;
 #    background: $surface-darken-1;
 
+    border-top: wide $panel-lighten-2;
     border-title-align: center;
     border-title-color: $secondary;
     border-title-style: bold;
 #    border-title-background: $surface;
 
+    border-bottom: thick $surface-darken-1;
     border-subtitle-align: center;
     border-subtitle-color: $primary-lighten-3;
     border-subtitle-style: bold;
@@ -91,4 +102,11 @@ Button {
     }
 }
 
+#cluster {
+    margin-top: -1;
+    border-title-align: center;
+    border-top: blank $secondary;
+    column-span: 4;
+    grid-size: 4;
+}
 
