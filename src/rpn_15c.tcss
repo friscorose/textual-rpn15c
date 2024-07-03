@@ -1,7 +1,9 @@
 #upper {
     height: 10;
     width: 122;
-    background:seashell;
+    border-top: panel white;
+    background:silver;
+    padding-top: 1;
     margin-left: 2;
     margin-right: 2;
 }
@@ -9,9 +11,8 @@
 #bezel {
     height: 7;
     width:45;
-    background:silver;
+    background:darkgrey;
     padding: 1;
-    margin-top: 2;
     margin-left: 16;
 }
 
@@ -26,14 +27,20 @@
 }
 
 .lcd{
-    color: black;
-    background: lightslategray;
+    color: gray;
+    background: dimgray;
 }
 
 .lcd Label {
     margin-left: 2;
 }
 
+#logo {
+    height: 6;
+    width: 13;
+    border: round black;
+    margin-left: 47;
+}
 #buttons {
     height: 19;
     width: 122;
@@ -48,7 +55,6 @@
 }
 
 #enter {
-    background: blue;
     row-span: 2;
 }
 
