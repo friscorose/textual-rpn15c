@@ -1,132 +1,130 @@
-#upper {
-    height: 10;
-    width: 122;
-    border-top: panel white 80%;
-    background:silver;
-    padding-top: 1;
-    margin-left: 2;
-    margin-right: 2;
+#calculator {
+    width: 126;
+    padding: 1;
+
+    #upper {
+        height: 10;
+        width: 100%;
+        border-top: panel white 80%;
+        background:silver;
+        padding: 1;
+    }
+
+    #logo {
+        height: 6;
+        width: 12;
+        border: round black;
+        margin-left: 45;
+        align: center middle;
+
+        #rpn-make {
+            color: silver;
+            background: black;
+            border-left: thick black;
+            border-right: thick black;
+            padding-left: 1;
+            padding-right: 1;
+            margin-left: 1;
+        }
+
+        #rpn-model {
+            color: black;
+            border: round black;
+            align: center middle;
+            padding-left: 1;
+            padding-right: 1;
+        }
+    }
 }
 
-#bezel {
+#hp_display {
     height: 7;
     width:45;
-    background:darkgrey;
+    background: darkgrey 40%;
     padding: 1;
     margin-left: 16;
+
+    #numbers {
+        border-top: tall slategray 50%;
+    }
+    #status {
+        padding-left: 3;
+        Label {
+            margin-left: 2;
+        }
+    }
+
+    .lcd {
+        color: darkslategray 20%;
+        background: aquamarine 10%;
+
+    }
+
+    .active {
+        color: darkslategray 100%;
+    }
 }
 
-#numbers {
-    width: 43;
-    border-top: tall slategray;
-}
-
-#status {
-    width: 43;
-    padding-left: 3;
-}
-
-.lcd{
-    color: gray;
-    background: dimgray;
-}
-
-.lcd Label {
-    margin-left: 2;
-}
-
-#logo {
-    height: 6;
-    width: 12;
-    border: round black;
-    margin-left: 47;
-    align: center middle;
-}
-
-#rpn-make {
-    color: silver;
-    background: black;
-    border-left: thick black;
-    border-right: thick black;
-    padding-left: 1;
-    padding-right: 1;
-    margin-left: 1;
-}
-
-#rpn-model {
-    color: black;
-    border: round black;
-    align: center middle;
-    padding-left: 1;
-    padding-right: 1;
-}
-
-#buttons {
+#hp_buttons {
     height: 19;
-    width: 122;
+    width: 100%;
     layout: grid;
     grid-size: 10 4;
     border: heavy white;
     border-subtitle-align: left;
     padding-top: 1;
     padding-left: 2;
-    margin-left: 2;
-    margin-right: 2;
-}
 
-#enter {
-    row-span: 2;
-}
+    #cluster {
+        margin-top: -1;
+        border-title-align: center;
+        border-top: blank $secondary;
+        column-span: 4;
+        grid-size: 4;
+    }
 
-#shift-f {
-    background: $secondary-darken-1;
-    color: black;
-    border-subtitle-background: $secondary-darken-3;
-    border-top: inner $secondary-darken-1;
-    border-bottom: thick $secondary-darken-3;
-}
+    #enter {
+        row-span: 2;
+    }
 
-#shift-g {
-    background: $primary-lighten-3;
-    color: black;
-    border-subtitle-background: $primary-lighten-2;
-    border-top: inner $primary-lighten-3;
-    border-bottom: thick $primary-lighten-2;
-}
+    #shift-f {
+        background: $secondary-darken-1;
+        color: black;
+        border-subtitle-background: $secondary-darken-3;
+        border-top: inner $secondary-darken-1;
+        border-bottom: thick $secondary-darken-3;
+    }
 
-#on {
-    border-top: heavy $panel-lighten-2;
-    border-bottom: tall $panel-darken-3;
-}
+    #shift-g {
+        background: $primary-lighten-3;
+        color: black;
+        border-subtitle-background: $primary-lighten-2;
+        border-top: inner $primary-lighten-3;
+        border-bottom: thick $primary-lighten-2;
+    }
 
-Button {
-    padding: 0;
-    min-width: 9;
-    color: white;
-#    background: $surface-darken-1;
+    #on {
+        border-top: heavy $panel-lighten-2;
+        border-bottom: tall $panel-darken-3;
+    }
 
-    border-top: wide $panel-lighten-2;
-    border-title-align: center;
-    border-title-color: $secondary;
-    border-title-style: bold;
-#    border-title-background: $surface;
+    HP_Button {
+        min-width: 9;
+        color: white;
 
-    border-bottom: thick $surface-darken-1;
-    border-subtitle-align: center;
-    border-subtitle-color: $primary-lighten-3;
-    border-subtitle-style: bold;
-    border-subtitle-background: $surface-darken-1;
+        border-top: wide $panel-lighten-2;
+        border-title-align: center;
+        border-title-color: $secondary;
+        border-title-style: bold;
 
-    &:focus {
-        text-style: bold;
+        border-bottom: thick $surface-darken-1;
+        border-subtitle-align: center;
+        border-subtitle-color: $primary-lighten-3;
+        border-subtitle-style: bold;
+        border-subtitle-background: $surface-darken-1;
+
+        &:focus {
+            text-style: bold;
+        }
     }
 }
-
-#cluster {
-    margin-top: -1;
-    border-title-align: center;
-    border-top: blank $secondary;
-    column-span: 4;
-    grid-size: 4;
-}
-
