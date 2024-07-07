@@ -14,23 +14,26 @@ from textual.containers import Container, Horizontal, Vertical, Grid
 from textual.reactive import reactive
 from textual.widgets import Button, Digits, Label, Static
 
+
 class HP_Display( Container ):
     def __init__(self, *args, **kwargs):
-        self.post_value = "-8,8,8,8,8,8,8,8,8,8,"
+        self.show_value = "0.0000"
+        self.n_digits = 10
+        self.status_strs = ["USER", "f", "g", "BEGIN", "GRAD", "DMY", "C", "PRGM"]
         super().__init__( id=kwargs["id"] )
 
     def compose(self) -> ComposeResult:
-        with Vertical( ):
-            yield Digits( self.post_value , id="numbers", classes="lcd" )
-            with Horizontal( id="status" ):
-                yield Label( "USER", id="user-state", classes="lcd" )
-                yield Label( "f", id="f-shift-state", classes="lcd" )
-                yield Label( "g", id="g-shift-state", classes="lcd" )
-                yield Label( "BEGIN", id="begin-state", classes="lcd" )
-                yield Label( "GRAD", id="grad-state", classes="lcd" )
-                yield Label( "DMY", id="dmy-state", classes="lcd" )
-                yield Label( "C", id="c-state", classes="lcd" )
-                yield Label( "PRGM", id="prgm-state", classes="lcd" )
+        with Vertical( id="lcd_display" ):
+            with Horizontal( id="lcd_digits" ):
+                yield Digits( "-", classes="negative" )
+                yield Digits( "8", classes="digit idx_0" )
+                for i in range( 1, self.n_digits ):
+                    yield Digits( ",", classes="separator idx_"+ str(i) )
+                    yield Digits( "8", classes="digit idx_"+ str(i) )
+                yield Digits( " ", classes="separator idx_"+ str(self.n_digits-1) )
+            with Horizontal( id="lcd_status" ):
+                for l in self.status_strs:
+                    yield Label( l, id=l+"-state" )
 
 
 class HP_Buttons( Container ):
@@ -107,12 +110,10 @@ class RPN_CalculatorApp(App):
 
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
-        hp_lcd = self.query(".lcd")
+        hp_lcd = self.query_one("#lcd_display")
         hp_lcd.add_class("active")
-        await sleep( 0.5 )
-        hp_status = self.query("Label")
-        hp_status.remove_class("active")
-        self.query_one("Digits").update( "0.0000" )
+        await sleep( 1.25 )
+        hp_lcd.remove_class("active")
         
 
 if __name__ == "__main__":

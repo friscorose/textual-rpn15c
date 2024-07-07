@@ -37,30 +37,37 @@
     }
 }
 
-#hp_display {
+HP_Display {
+    margin-left: 16;
     height: 7;
     width:45;
+    /* bezel */
     background: darkgrey 40%;
     padding: 1;
-    margin-left: 16;
 
-    #numbers {
-        border-top: tall slategray 50%;
-    }
-    #status {
-        padding-left: 3;
-        Label {
-            margin-left: 2;
+    #lcd_display {
+        background: aquamarine 20%;
+        color: darkslategray 10%;
+        #lcd_digits {
+            Digits {
+                border-top: tall slategray 50%;
+            }
+            .digit .negative {
+                width:3;
+            }
+            .separator {
+                width:1;
+            }
+        }
+        #lcd_status {
+            height: 1;
+            padding-left: 3;
+            Label {
+                margin-left: 2;
+            }
         }
     }
-
-    .lcd {
-        color: darkslategray 20%;
-        background: aquamarine 10%;
-
-    }
-
-    .active {
+    #lcd_display.active {
         color: darkslategray 100%;
     }
 }
