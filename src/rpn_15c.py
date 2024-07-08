@@ -11,29 +11,59 @@ from asyncio import sleep
 from textual import events, on
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, Vertical, Grid
-from textual.reactive import reactive
+from textual.reactive import var
 from textual.widgets import Button, Digits, Label, Static
+from textual.widget import Widget
 
 
-class HP_Display( Container ):
-    def __init__(self, *args, **kwargs):
-        self.show_value = "0.0000"
-        self.n_digits = 10
-        self.status_strs = ["USER", "f", "g", "BEGIN", "GRAD", "DMY", "C", "PRGM"]
-        super().__init__( id=kwargs["id"] )
+class HP_Display( Widget ):
+    value = var("")
+    n_digits = 10
+    off_val = "-"+",".join( "8"*n_digits )
+    status_strs = ["USER", "f", "g", "BEGIN", "GRAD", "DMY", "C", "PRGM"]
+    lcd_digs = [None]*n_digits
+    lcd_seps = [None]*n_digits
+    
+    def __init__(self, id:str | None=None) -> None:
+        super().__init__( id=id )
 
     def compose(self) -> ComposeResult:
         with Vertical( id="lcd_display" ):
             with Horizontal( id="lcd_digits" ):
-                yield Digits( "-", classes="negative" )
-                yield Digits( "8", classes="digit idx_0" )
-                for i in range( 1, self.n_digits ):
-                    yield Digits( ",", classes="separator idx_"+ str(i) )
-                    yield Digits( "8", classes="digit idx_"+ str(i) )
+                for i in range( self.n_digits ):
+                    if i: self.lcd_seps[i] = Digits( classes="lcd separator idx_"+ str(i) )
+                    else: self.lcd_seps[i] = Digits( classes="lcd negative idx_"+ str(i) )
+                    self.lcd_digs[i] = Digits( classes="lcd digit idx_"+ str(i) )
+                    yield self.lcd_seps[i]
+                    yield self.lcd_digs[i]
                 yield Digits( " ", classes="separator idx_"+ str(self.n_digits-1) )
             with Horizontal( id="lcd_status" ):
                 for l in self.status_strs:
-                    yield Label( l, id=l+"-state" )
+                    yield Label( l, id=l+"-state", classes="lcd" )
+
+    def watch_value(self, value) -> None:
+        self.parse_value()
+
+    def parse_value(self) -> None:
+        buffer = self.value
+        n_chars = len( buffer )
+        for idx in range( self.n_digits ):
+            if n_chars:
+                if buffer[0] in '-.,':
+                    self.lcd_seps[idx].update( buffer[0] )
+                    self.lcd_seps[idx].add_class("active")
+                    buffer = buffer[1:]
+                    n_chars -= 1
+                if n_chars and buffer[0] in '0123456789':
+                    self.lcd_digs[idx].update( buffer[0] )
+                    self.lcd_digs[idx].add_class("active")
+                    buffer = buffer[1:]
+                    n_chars -= 1
+            else:
+                self.lcd_seps[idx].remove_class("active")
+                self.lcd_seps[idx].update( self.off_val[ 2*idx ] )
+                self.lcd_digs[idx].remove_class("active")
+                self.lcd_digs[idx].update( self.off_val[ 2*idx+1] )
 
 
 class HP_Buttons( Container ):
@@ -110,10 +140,13 @@ class RPN_CalculatorApp(App):
 
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
-        hp_lcd = self.query_one("#lcd_display")
-        hp_lcd.add_class("active")
-        await sleep( 1.25 )
-        hp_lcd.remove_class("active")
+        lcd_display = self.query(".lcd")
+        lcd_display.add_class("active")
+        await sleep( 1.0 )
+        lcd_display.remove_class("active")
+        await sleep( 0.25 )
+        self.query_one("HP_Display").value = ""
+        self.query_one("HP_Display").value = "0.0000"
         
 
 if __name__ == "__main__":

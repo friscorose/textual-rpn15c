@@ -48,6 +48,9 @@ HP_Display {
     #lcd_display {
         background: aquamarine 20%;
         color: darkslategray 10%;
+        .lcd.active{
+            color: darkslategray 100%;
+        }
         #lcd_digits {
             Digits {
                 border-top: tall slategray 50%;
@@ -66,9 +69,6 @@ HP_Display {
                 margin-left: 2;
             }
         }
-    }
-    #lcd_display.active {
-        color: darkslategray 100%;
     }
 }
 
