@@ -17,6 +17,45 @@ from textual.widget import Widget
 
 
 class HP_Display( Widget ):
+    """LCD panel that approximates the HP 15c layout"""
+
+    DEFAULT_CSS = """
+    HP_Display {
+        margin-left: 16;
+        height: 7;
+        width:45;
+        /* bezel */
+        background: darkgrey 40%;
+        padding: 1;
+
+        #lcd_display {
+            background: aquamarine 20%;
+            color: darkslategray 10%;
+            .lcd.active{
+                color: darkslategray 100%;
+            }
+            #lcd_digits {
+                Digits {
+                    border-top: tall slategray 50%;
+                }
+                .digit .negative {
+                    width:3;
+                }
+                .separator {
+                    width:1;
+                }
+            }
+            #lcd_status {
+                height: 1;
+                padding-left: 3;
+                Label {
+                    margin-left: 2;
+                }
+            }
+        }
+    }
+    """
+    
     value = var("")
     n_digits = 10
     off_val = "-"+",".join( "8"*n_digits )
@@ -41,7 +80,7 @@ class HP_Display( Widget ):
                 for l in self.status_strs:
                     yield Label( l, id=l+"-state", classes="lcd" )
 
-    def watch_value(self, value) -> None:
+    def watch_value(self) -> None:
         self.parse_value()
 
     def parse_value(self) -> None:
@@ -76,7 +115,7 @@ class HP_Buttons( Container ):
 
     def compose(self) -> ComposeResult:
         calc_buttons =  Grid(id="hp_buttons")
-        calc_buttons.border_subtitle = "H   E   W   L   E   T   T  •  P   A   C   K   A   R   D"
+        calc_buttons.border_subtitle = " H   E   W   L   E   T   T  •  P   A   C   K   A   R   D "
         with calc_buttons:
             yield self.HP_Button("√x", "A", "  x²   ", id="sqrt-x")
             yield self.HP_Button("eˣ", "B", "  LN   ", id="exp-x")
@@ -128,6 +167,8 @@ class RPN_CalculatorApp(App):
     """A working TUI calculator."""
     CSS_PATH = "rpn_15c.tcss"
 
+    stack_X = var(0)
+
     def compose(self) -> ComposeResult:
         """Add our buttons."""
         with Container(id="calculator"):
@@ -138,14 +179,24 @@ class RPN_CalculatorApp(App):
                     yield Label("15 C", id="rpn-model")
             yield HP_Buttons( )
 
+    def watch_stack_X(self):
+        pass
+
+    @on( Button.Pressed )
+    def toggle_status( self, event ) -> None:
+        if event.button.id == "shift-f":
+            self.query_one( "#f-state" ).toggle_class( "active" )
+        if event.button.id == "shift-g":
+            self.query_one( "#g-state" ).toggle_class( "active" )
+
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
+        self.query_one("HP_Display").value = ""
         lcd_display = self.query(".lcd")
         lcd_display.add_class("active")
         await sleep( 1.0 )
         lcd_display.remove_class("active")
         await sleep( 0.25 )
-        self.query_one("HP_Display").value = ""
         self.query_one("HP_Display").value = "0.0000"
         
 

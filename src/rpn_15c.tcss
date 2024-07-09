@@ -37,40 +37,6 @@
     }
 }
 
-HP_Display {
-    margin-left: 16;
-    height: 7;
-    width:45;
-    /* bezel */
-    background: darkgrey 40%;
-    padding: 1;
-
-    #lcd_display {
-        background: aquamarine 20%;
-        color: darkslategray 10%;
-        .lcd.active{
-            color: darkslategray 100%;
-        }
-        #lcd_digits {
-            Digits {
-                border-top: tall slategray 50%;
-            }
-            .digit .negative {
-                width:3;
-            }
-            .separator {
-                width:1;
-            }
-        }
-        #lcd_status {
-            height: 1;
-            padding-left: 3;
-            Label {
-                margin-left: 2;
-            }
-        }
-    }
-}
 
 #hp_buttons {
     height: 19;
