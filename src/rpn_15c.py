@@ -87,6 +87,10 @@ class HP_Display( Widget ):
         buffer = self.value
         n_chars = len( buffer )
         for idx in range( self.n_digits ):
+            self.lcd_seps[idx].remove_class("active")
+            self.lcd_seps[idx].update( self.off_val[ 2*idx ] )
+            self.lcd_digs[idx].remove_class("active")
+            self.lcd_digs[idx].update( self.off_val[ 2*idx+1] )
             if n_chars:
                 if buffer[0] in '-.,':
                     self.lcd_seps[idx].update( buffer[0] )
@@ -98,11 +102,6 @@ class HP_Display( Widget ):
                     self.lcd_digs[idx].add_class("active")
                     buffer = buffer[1:]
                     n_chars -= 1
-            else:
-                self.lcd_seps[idx].remove_class("active")
-                self.lcd_seps[idx].update( self.off_val[ 2*idx ] )
-                self.lcd_digs[idx].remove_class("active")
-                self.lcd_digs[idx].update( self.off_val[ 2*idx+1] )
 
 
 class HP_Buttons( Container ):
@@ -167,7 +166,15 @@ class RPN_CalculatorApp(App):
     """A working TUI calculator."""
     CSS_PATH = "rpn_15c.tcss"
 
-    stack_X = var(0)
+    buffer_X = var(0)
+    state= {}
+    state['fix'] = 4
+    state['X'] = 0
+    state['Y'] = 0
+    state['Z'] = 0
+    state['T'] = 0
+    buf_int = 10
+    buf_dec = 1
 
     def compose(self) -> ComposeResult:
         """Add our buttons."""
@@ -179,8 +186,8 @@ class RPN_CalculatorApp(App):
                     yield Label("15 C", id="rpn-model")
             yield HP_Buttons( )
 
-    def watch_stack_X(self):
-        pass
+    def watch_buffer_X(self):
+        self.query_one("HP_Display").value = '{0:.{1}f}'.format(self.buffer_X, self.state['fix'])
 
     @on( Button.Pressed )
     def toggle_status( self, event ) -> None:
@@ -188,6 +195,56 @@ class RPN_CalculatorApp(App):
             self.query_one( "#f-state" ).toggle_class( "active" )
         if event.button.id == "shift-g":
             self.query_one( "#g-state" ).toggle_class( "active" )
+
+        if event.button.id == "enter":
+            self.state['T'] = self.state['Z']
+            self.state['Z'] = self.state['Y']
+            self.state['Y'] = self.state['X']
+            self.state['X'] = self.buffer_X
+            self.buffer_X = 0
+
+        if event.button.id == "digit-0":
+            self.buffer_X *= self.buf_int
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-1":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 1/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-2":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 2/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-3":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 3/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-4":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 4/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-5":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 5/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-6":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 6/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-7":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 7/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-8":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 8/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "digit-9":
+            self.buffer_X *= self.buf_int
+            self.buffer_X += 9/self.buf_dec
+            if self.buf_dec > 1: self.buf_dec *= 10
+        if event.button.id == "decimal":
+            self.buf_int = 1
+            self.buf_dec = 10
 
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
@@ -197,7 +254,9 @@ class RPN_CalculatorApp(App):
         await sleep( 1.0 )
         lcd_display.remove_class("active")
         await sleep( 0.25 )
-        self.query_one("HP_Display").value = "0.0000"
+        self.buf_int = 10
+        self.buf_dec = 1
+        self.buffer_X = 0
         
 
 if __name__ == "__main__":
