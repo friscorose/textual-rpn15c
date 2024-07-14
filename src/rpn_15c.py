@@ -166,10 +166,11 @@ class RPN_CalculatorApp(App):
     """A working TUI calculator."""
     CSS_PATH = "rpn_15c.tcss"
 
-    buffer_X = var(0)
+    buffer_X = var("")
+    number_X = var(0)
     state= {}
     state['fix'] = 4
-    state['X'] = 0
+    state['X'] = var(0)
     state['Y'] = 0
     state['Z'] = 0
     state['T'] = 0
@@ -186,8 +187,37 @@ class RPN_CalculatorApp(App):
                     yield Label("15 C", id="rpn-model")
             yield HP_Buttons( )
 
+    def watch_number_X(self):
+        self.query_one("HP_Display").value = '{0:.{1}f}'.format(self.number_X, self.state['fix'])
+
     def watch_buffer_X(self):
-        self.query_one("HP_Display").value = '{0:.{1}f}'.format(self.buffer_X, self.state['fix'])
+        self.query_one("HP_Display").value = self.buffer_X
+
+    def pop_T(self) -> float:
+        number = self.state['T']
+        self.state['T'] = 0
+        return number
+
+    def pop_Z(self) -> float:
+        number = self.state['Z']
+        self.state['Z'] = self.pop_T()
+        return number
+
+    def pop_Y(self) -> float:
+        number = self.state['Y']
+        self.state['Y'] = self.pop_Z()
+        return number
+
+    def pop_X(self) -> float:
+        number = self.state['X']
+        self.state['X'] = self.pop_Y()
+        return number
+
+    def push_X(self, number) -> None:
+        self.state['T'] = self.state['Z']
+        self.state['Z'] = self.state['Y']
+        self.state['Y'] = self.state['X']
+        self.state['X'] = number
 
     @on( Button.Pressed )
     def toggle_status( self, event ) -> None:
@@ -200,85 +230,54 @@ class RPN_CalculatorApp(App):
             self.enter_actions()
 
         if event.button.id == "digit-0":
-            self.buffer_X *= self.buf_int
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "0"
         if event.button.id == "digit-1":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 1/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "1"
         if event.button.id == "digit-2":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 2/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "2"
         if event.button.id == "digit-3":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 3/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "3"
         if event.button.id == "digit-4":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 4/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "4"
         if event.button.id == "digit-5":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 5/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "5"
         if event.button.id == "digit-6":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 6/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "6"
         if event.button.id == "digit-7":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 7/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "7"
         if event.button.id == "digit-8":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 8/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
+            self.buffer_X += "8"
         if event.button.id == "digit-9":
-            self.buffer_X *= self.buf_int
-            self.buffer_X += 9/self.buf_dec
-            if self.buf_dec > 1: self.buf_dec *= 10
-
+            self.buffer_X += "9"
         if event.button.id == "decimal":
-            self.buf_int = 1
-            self.buf_dec = 10
+            if "." not in self.buffer_X: self.buffer_X += "."
         
         
         if event.button.id == "addition":
             self.enter_actions()
-            self.state['X'] += self.state['Y']
-            self.state['Y'] = 0
-            self.buffer_X = self.state['X']
-            self.state['X'] = 0
+            self.state['X'] += self.pop_Y()
+            self.number_X = self.state['X']
         
         if event.button.id == "subtraction":
             self.enter_actions()
-            self.state['X'] -= self.state['Y']
-            self.state['Y'] = 0
-            self.buffer_X = -self.state['X']
-            self.state['X'] = 0
+            self.state['X'] = self.pop_Y() - self.state['X']
+            self.number_X = self.state['X']
         
         if event.button.id == "multiplication":
             self.enter_actions()
-            self.state['X'] *= self.state['Y']
-            self.state['Y'] = 0
-            self.buffer_X = self.state['X']
-            self.state['X'] = 0
+            self.state['X'] *= self.pop_Y()
+            self.number_X = self.state['X']
 
         if event.button.id == "division":
             self.enter_actions()
-            self.state['X'] /= self.state['Y']
-            self.state['Y'] = 0
-            self.buffer_X = 1/self.state['X']
-            self.state['X'] = 0
+            self.state['X'] = self.pop_Y() / self.state['X']
+            self.number_X = self.state['X']
 
 
     def enter_actions( self ) -> None:
-        self.state['T'] = self.state['Z']
-        self.state['Z'] = self.state['Y']
-        self.state['Y'] = self.state['X']
-        self.state['X'] = self.buffer_X
-        self.buffer_X = 0
+        self.push_X( float(self.buffer_X) )
+        self.buffer_X = ""
+        self.number_X = self.state['X']
 
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
@@ -288,9 +287,7 @@ class RPN_CalculatorApp(App):
         await sleep( 1.0 )
         lcd_display.remove_class("active")
         await sleep( 0.25 )
-        self.buf_int = 10
-        self.buf_dec = 1
-        self.buffer_X = 0
+        self.number_X = 0
         
 
 if __name__ == "__main__":
