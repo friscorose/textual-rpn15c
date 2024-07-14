@@ -197,11 +197,7 @@ class RPN_CalculatorApp(App):
             self.query_one( "#g-state" ).toggle_class( "active" )
 
         if event.button.id == "enter":
-            self.state['T'] = self.state['Z']
-            self.state['Z'] = self.state['Y']
-            self.state['Y'] = self.state['X']
-            self.state['X'] = self.buffer_X
-            self.buffer_X = 0
+            self.enter_actions()
 
         if event.button.id == "digit-0":
             self.buffer_X *= self.buf_int
@@ -242,9 +238,47 @@ class RPN_CalculatorApp(App):
             self.buffer_X *= self.buf_int
             self.buffer_X += 9/self.buf_dec
             if self.buf_dec > 1: self.buf_dec *= 10
+
         if event.button.id == "decimal":
             self.buf_int = 1
             self.buf_dec = 10
+        
+        
+        if event.button.id == "addition":
+            self.enter_actions()
+            self.state['X'] += self.state['Y']
+            self.state['Y'] = 0
+            self.buffer_X = self.state['X']
+            self.state['X'] = 0
+        
+        if event.button.id == "subtraction":
+            self.enter_actions()
+            self.state['X'] -= self.state['Y']
+            self.state['Y'] = 0
+            self.buffer_X = -self.state['X']
+            self.state['X'] = 0
+        
+        if event.button.id == "multiplication":
+            self.enter_actions()
+            self.state['X'] *= self.state['Y']
+            self.state['Y'] = 0
+            self.buffer_X = self.state['X']
+            self.state['X'] = 0
+
+        if event.button.id == "division":
+            self.enter_actions()
+            self.state['X'] /= self.state['Y']
+            self.state['Y'] = 0
+            self.buffer_X = 1/self.state['X']
+            self.state['X'] = 0
+
+
+    def enter_actions( self ) -> None:
+        self.state['T'] = self.state['Z']
+        self.state['Z'] = self.state['Y']
+        self.state['Y'] = self.state['X']
+        self.state['X'] = self.buffer_X
+        self.buffer_X = 0
 
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
