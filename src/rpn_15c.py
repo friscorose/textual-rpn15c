@@ -7,6 +7,7 @@ or [https://www.hpmuseum.org/forum/archive/index.php?thread-19260.html]
 looks like a real calculator.
 """
 
+import math
 from asyncio import sleep
 from textual import events, on
 from textual.app import App, ComposeResult
@@ -244,7 +245,13 @@ class RPN_CalculatorApp(App):
         if event.button.id == "digit-6":
             self.buffer_X += "6"
         if event.button.id == "digit-7":
-            self.buffer_X += "7"
+            if self.query_one( "#f-state" ):
+                self.enter_actions()
+                self.state['fix'] = int( self.pop_X() )
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.number_X = 0
+            else:
+                self.buffer_X += "7"
         if event.button.id == "digit-8":
             self.buffer_X += "8"
         if event.button.id == "digit-9":
@@ -271,6 +278,11 @@ class RPN_CalculatorApp(App):
         if event.button.id == "division":
             self.enter_actions()
             self.state['X'] = self.pop_Y() / self.state['X']
+            self.number_X = self.state['X']
+
+        if event.button.id == "sqrt-x":
+            self.enter_actions()
+            self.state['X'] = math.sqrt( self.pop_X() )
             self.number_X = self.state['X']
 
 
