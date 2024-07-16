@@ -167,16 +167,19 @@ class RPN_CalculatorApp(App):
     """A working TUI calculator."""
     CSS_PATH = "rpn_15c.tcss"
 
+    number_X = var( float('nan') )
     buffer_X = var("")
-    number_X = var(0)
-    state= {}
-    state['fix'] = 4
-    state['X'] = var(0)
-    state['Y'] = 0
-    state['Z'] = 0
-    state['T'] = 0
-    buf_int = 10
-    buf_dec = 1
+
+    def state_reset( self ) -> None:
+        self.state= {}
+        self.state['fix'] = 4
+        self.state['X'] = float( 'nan' )
+        self.state['Y'] = float( 'nan' )
+        self.state['Z'] = float( 'nan' )
+        self.state['T'] = float( 'nan' )
+
+    def on_mount( self ):
+        self.state_reset()
 
     def compose(self) -> ComposeResult:
         """Add our buttons."""
@@ -189,14 +192,17 @@ class RPN_CalculatorApp(App):
             yield HP_Buttons( )
 
     def watch_number_X(self):
-        self.query_one("HP_Display").value = '{0:.{1}f}'.format(self.number_X, self.state['fix'])
+        if math.isnan( self.number_X ):
+            self.query_one("HP_Display").value = '{0:.{1}f}'.format(0, self.state['fix'])
+        else:
+            self.query_one("HP_Display").value = '{0:.{1}f}'.format(self.number_X, self.state['fix'])
 
     def watch_buffer_X(self):
         self.query_one("HP_Display").value = self.buffer_X
 
     def pop_T(self) -> float:
         number = self.state['T']
-        self.state['T'] = 0
+        self.state['T'] = float( 'nan' )
         return number
 
     def pop_Z(self) -> float:
@@ -245,11 +251,14 @@ class RPN_CalculatorApp(App):
         if event.button.id == "digit-6":
             self.buffer_X += "6"
         if event.button.id == "digit-7":
-            if self.query_one( "#f-state" ):
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+                pass
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
                 self.enter_actions()
                 self.state['fix'] = int( self.pop_X() )
-                self.query_one( "#f-state" ).toggle_class( "active" )
-                self.number_X = 0
+                self.number_X = self.state['X']
             else:
                 self.buffer_X += "7"
         if event.button.id == "digit-8":
@@ -281,14 +290,52 @@ class RPN_CalculatorApp(App):
             self.number_X = self.state['X']
 
         if event.button.id == "sqrt-x":
-            self.enter_actions()
-            self.state['X'] = math.sqrt( self.pop_X() )
-            self.number_X = self.state['X']
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] =  self.pop_X()**2
+                self.number_X = self.state['X']
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.buffer_X = 'A'
+            else:
+                self.enter_actions()
+                self.state['X'] = math.sqrt( self.pop_X() )
+                self.number_X = self.state['X']
+
+        if event.button.id == "exp-x":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.log( self.pop_X() )
+                self.number_X = self.state['X']
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.buffer_X = 'B'
+            else:
+                self.enter_actions()
+                self.state['X'] = math.exp( self.pop_X() )
+                self.number_X = self.state['X']
+
+        if event.button.id == "ten-x":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.log( self.pop_X(), 10 )
+                self.number_X = self.state['X']
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.buffer_X = 'C'
+            else:
+                self.enter_actions()
+                self.state['X'] = 10**self.pop_X() 
+                self.number_X = self.state['X']
 
 
     def enter_actions( self ) -> None:
-        self.push_X( float(self.buffer_X) )
-        self.buffer_X = ""
+        if self.buffer_X:
+            self.push_X( float(self.buffer_X) )
+            self.buffer_X = ""
         self.number_X = self.state['X']
 
     @on( Button.Pressed, "#on" )
@@ -299,6 +346,7 @@ class RPN_CalculatorApp(App):
         await sleep( 1.0 )
         lcd_display.remove_class("active")
         await sleep( 0.25 )
+        self.state_reset()
         self.number_X = 0
         
 
