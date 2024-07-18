@@ -98,7 +98,7 @@ class HP_Display( Widget ):
                     self.lcd_seps[idx].add_class("active")
                     buffer = buffer[1:]
                     n_chars -= 1
-                if n_chars and buffer[0] in '0123456789':
+                if n_chars and buffer[0] in '0123456789AbCdEF':
                     self.lcd_digs[idx].update( buffer[0] )
                     self.lcd_digs[idx].add_class("active")
                     buffer = buffer[1:]
@@ -311,7 +311,7 @@ class RPN_CalculatorApp(App):
                 self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X = 'B'
+                self.buffer_X = 'b'
             else:
                 self.enter_actions()
                 self.state['X'] = math.exp( self.pop_X() )
@@ -331,6 +331,17 @@ class RPN_CalculatorApp(App):
                 self.state['X'] = 10**self.pop_X() 
                 self.number_X = self.state['X']
 
+        if event.button.id == "wye-x":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.buffer_X = 'd'
+            else:
+                self.enter_actions()
+                self.state['X'] = self.pop_Y()**self.pop_X() 
+                self.number_X = self.state['X']
+
 
     def enter_actions( self ) -> None:
         if self.buffer_X:
@@ -347,7 +358,8 @@ class RPN_CalculatorApp(App):
         lcd_display.remove_class("active")
         await sleep( 0.25 )
         self.state_reset()
-        self.number_X = 0
+        self.buffer_X = "" 
+        self.number_X = float('nan')
         
 
 if __name__ == "__main__":
