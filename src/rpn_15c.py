@@ -297,7 +297,7 @@ class RPN_CalculatorApp(App):
                 self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X = 'A'
+                self.buffer_X += 'A'
             else:
                 self.enter_actions()
                 self.state['X'] = math.sqrt( self.pop_X() )
@@ -311,7 +311,7 @@ class RPN_CalculatorApp(App):
                 self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X = 'b'
+                self.buffer_X += 'b'
             else:
                 self.enter_actions()
                 self.state['X'] = math.exp( self.pop_X() )
@@ -325,7 +325,7 @@ class RPN_CalculatorApp(App):
                 self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X = 'C'
+                self.buffer_X += 'C'
             else:
                 self.enter_actions()
                 self.state['X'] = 10**self.pop_X() 
@@ -336,10 +336,21 @@ class RPN_CalculatorApp(App):
                 self.query_one( "#g-state" ).toggle_class( "active" )
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X = 'd'
+                self.buffer_X += 'd'
             else:
                 self.enter_actions()
                 self.state['X'] = self.pop_Y()**self.pop_X() 
+                self.number_X = self.state['X']
+
+        if event.button.id == "inverse-x":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.buffer_X += 'E'
+            else:
+                self.enter_actions()
+                self.state['X'] = 1/self.pop_X() 
                 self.number_X = self.state['X']
 
 
