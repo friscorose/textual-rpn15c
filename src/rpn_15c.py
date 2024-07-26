@@ -193,9 +193,9 @@ class RPN_CalculatorApp(App):
 
     def watch_number_X(self):
         if math.isnan( self.number_X ):
-            self.query_one("HP_Display").value = '{0:.{1}f}'.format(0, self.state['fix'])
+            self.query_one("HP_Display").value = '{0:,.{1}f}'.format(0, self.state['fix'])
         else:
-            self.query_one("HP_Display").value = '{0:.{1}f}'.format(self.number_X, self.state['fix'])
+            self.query_one("HP_Display").value = '{0:,.{1}f}'.format(self.number_X, self.state['fix'])
 
     def watch_buffer_X(self):
         self.query_one("HP_Display").value = self.buffer_X
@@ -237,23 +237,57 @@ class RPN_CalculatorApp(App):
             self.enter_actions()
 
         if event.button.id == "digit-0":
-            self.buffer_X += "0"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "0"
         if event.button.id == "digit-1":
-            self.buffer_X += "1"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "1"
         if event.button.id == "digit-2":
-            self.buffer_X += "2"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "2"
         if event.button.id == "digit-3":
-            self.buffer_X += "3"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "3"
         if event.button.id == "digit-4":
-            self.buffer_X += "4"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "4"
         if event.button.id == "digit-5":
-            self.buffer_X += "5"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "5"
         if event.button.id == "digit-6":
-            self.buffer_X += "6"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "6"
         if event.button.id == "digit-7":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
-                pass
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
                 self.enter_actions()
@@ -262,11 +296,30 @@ class RPN_CalculatorApp(App):
             else:
                 self.buffer_X += "7"
         if event.button.id == "digit-8":
-            self.buffer_X += "8"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "8"
         if event.button.id == "digit-9":
-            self.buffer_X += "9"
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                self.buffer_X += "9"
         if event.button.id == "decimal":
-            if "." not in self.buffer_X: self.buffer_X += "."
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                if "." not in self.buffer_X:
+                    if self.buffer_X: 
+                        self.buffer_X += "."
+                    else:
+                        self.buffer_X += "0."
         
         
         if event.button.id == "addition":
@@ -352,6 +405,131 @@ class RPN_CalculatorApp(App):
                 self.enter_actions()
                 self.state['X'] = 1/self.pop_X() 
                 self.number_X = self.state['X']
+
+        if event.button.id == "chs":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.abs( self.pop_X())
+                self.number_X = self.state['X']
+            else:
+                self.enter_actions()
+                self.state['X'] = -1*self.pop_X() 
+                self.number_X = self.state['X']
+
+        if event.button.id == "sst":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "gto":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "sin":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "cos":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "tan":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "eex":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "rtos":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+        if event.button.id == "gsb":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "r-down":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "x-swap-y":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "backspace":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "sto":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "rcl":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
+        if event.button.id == "sum":
+            if self.query_one( "#g-state" ).has_class("active"):
+                self.query_one( "#g-state" ).toggle_class( "active" )
+            elif self.query_one( "#f-state" ).has_class("active"):
+                self.query_one( "#f-state" ).toggle_class( "active" )
+            else:
+                pass
+
 
 
     def enter_actions( self ) -> None:
