@@ -241,6 +241,9 @@ class RPN_CalculatorApp(App):
                 self.query_one( "#g-state" ).toggle_class( "active" )
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.factorial( int( self.pop_X() ) )
+                self.number_X = self.state['X']
             else:
                 self.buffer_X += "0"
         if event.button.id == "digit-1":
@@ -409,11 +412,11 @@ class RPN_CalculatorApp(App):
         if event.button.id == "chs":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = abs( self.pop_X())
+                self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.enter_actions()
-                self.state['X'] = math.abs( self.pop_X())
-                self.number_X = self.state['X']
             else:
                 self.enter_actions()
                 self.state['X'] = -1*self.pop_X() 
@@ -462,6 +465,9 @@ class RPN_CalculatorApp(App):
         if event.button.id == "eex":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.pi
+                self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
             else:
@@ -509,8 +515,14 @@ class RPN_CalculatorApp(App):
         if event.button.id == "sto":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.modf( self.state['X'] )[1]
+                self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
+                self.enter_actions()
+                self.state['X'] = math.modf( self.state['X'] )[0]
+                self.number_X = self.state['X']
             else:
                 pass
 
