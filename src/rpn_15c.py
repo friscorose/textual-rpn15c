@@ -8,6 +8,7 @@ looks like a real calculator.
 """
 
 import math
+from enum import Enum
 from asyncio import sleep
 from textual import events, on
 from textual.app import App, ComposeResult
@@ -169,10 +170,15 @@ class RPN_CalculatorApp(App):
 
     number_X = var( float('nan') )
     buffer_X = var("")
+    angle_M = var('deg')
+
 
     def state_reset( self ) -> None:
         self.state= {}
         self.state['fix'] = 4
+        self.state['angle_deg'] = False
+        self.state['angle_rad'] = True
+        self.state['angle_grad'] = False
         self.state['X'] = float( 'nan' )
         self.state['Y'] = float( 'nan' )
         self.state['Z'] = float( 'nan' )
@@ -199,6 +205,24 @@ class RPN_CalculatorApp(App):
 
     def watch_buffer_X(self):
         self.query_one("HP_Display").value = self.buffer_X
+
+    def watch_angle_M(self):
+        self.state['angle_deg'] = False
+        self.state['angle_rad'] = False
+        self.state['angle_grad'] = False
+        angle_status = self.query_one("#GRAD-state")
+        angle_status.remove_class( "active" )
+        angle_status.update( "GRAD" )
+        if self.angle_M == 'grad':
+            angle_status.add_class( "active" )
+            self.state['angle_grad'] = True
+        elif self.angle_M == 'rad':
+            angle_status.update( " RAD" )
+            angle_status.add_class( "active" )
+            self.state['angle_rad'] = True
+        else:
+            self.angle_M = 'deg'
+            self.state['angle_deg'] = True
 
     def pop_T(self) -> float:
         number = self.state['T']
@@ -291,6 +315,7 @@ class RPN_CalculatorApp(App):
         if event.button.id == "digit-7":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
+                self.angle_M = 'deg'
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
                 self.enter_actions()
@@ -301,6 +326,7 @@ class RPN_CalculatorApp(App):
         if event.button.id == "digit-8":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
+                self.angle_M = 'rad'
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
             else:
@@ -308,6 +334,7 @@ class RPN_CalculatorApp(App):
         if event.button.id == "digit-9":
             if self.query_one( "#g-state" ).has_class("active"):
                 self.query_one( "#g-state" ).toggle_class( "active" )
+                self.angle_M = 'grad'
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
             else:
