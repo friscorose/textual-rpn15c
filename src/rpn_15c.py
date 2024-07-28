@@ -176,13 +176,14 @@ class RPN_CalculatorApp(App):
     def state_reset( self ) -> None:
         self.state= {}
         self.state['fix'] = 4
-        self.state['angle_deg'] = False
-        self.state['angle_rad'] = True
+        self.state['angle_deg'] = True
+        self.state['angle_rad'] = False
         self.state['angle_grad'] = False
         self.state['X'] = float( 'nan' )
         self.state['Y'] = float( 'nan' )
         self.state['Z'] = float( 'nan' )
         self.state['T'] = float( 'nan' )
+        self.angle_M = 'deg'
 
     def on_mount( self ):
         self.state_reset()
@@ -205,6 +206,12 @@ class RPN_CalculatorApp(App):
 
     def watch_buffer_X(self):
         self.query_one("HP_Display").value = self.buffer_X
+
+    def enter_actions( self ) -> None:
+        if self.buffer_X:
+            self.push_X( float(self.buffer_X) )
+            self.buffer_X = ""
+        self.number_X = self.state['X']
 
     def watch_angle_M(self):
         self.state['angle_deg'] = False
@@ -471,7 +478,15 @@ class RPN_CalculatorApp(App):
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
             else:
-                pass
+                self.enter_actions()
+                if self.state[ 'angle_deg' ]:
+                    self.state['X'] = math.sin(math.radians( self.pop_X() ))
+                elif self.state[ 'angle_rad' ]:
+                    self.state['X'] = math.sin( self.pop_X() )
+                elif self.state[ 'angle_grad' ]:
+                    self.state['X'] = math.sin( self.pop_X()*math.pi/200 )
+                self.state['X'] = self.pop_X() 
+                self.number_X = self.state['X']
 
         if event.button.id == "cos":
             if self.query_one( "#g-state" ).has_class("active"):
@@ -479,7 +494,15 @@ class RPN_CalculatorApp(App):
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
             else:
-                pass
+                self.enter_actions()
+                if self.state[ 'angle_deg' ]:
+                    self.state['X'] = math.cos(math.radians( self.pop_X() ))
+                elif self.state[ 'angle_rad' ]:
+                    self.state['X'] = math.cos( self.pop_X() )
+                elif self.state[ 'angle_grad' ]:
+                    self.state['X'] = math.cos( self.pop_X()*math.pi/200 )
+                self.state['X'] = self.pop_X() 
+                self.number_X = self.state['X']
 
         if event.button.id == "tan":
             if self.query_one( "#g-state" ).has_class("active"):
@@ -487,7 +510,15 @@ class RPN_CalculatorApp(App):
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
             else:
-                pass
+                self.enter_actions()
+                if self.state[ 'angle_deg' ]:
+                    self.state['X'] = math.tan(math.radians( self.pop_X() ))
+                elif self.state[ 'angle_rad' ]:
+                    self.state['X'] = math.tan( self.pop_X() )
+                elif self.state[ 'angle_grad' ]:
+                    self.state['X'] = math.tan( self.pop_X()*math.pi/200 )
+                self.state['X'] = self.pop_X() 
+                self.number_X = self.state['X']
 
         if event.button.id == "eex":
             if self.query_one( "#g-state" ).has_class("active"):
@@ -570,12 +601,6 @@ class RPN_CalculatorApp(App):
                 pass
 
 
-
-    def enter_actions( self ) -> None:
-        if self.buffer_X:
-            self.push_X( float(self.buffer_X) )
-            self.buffer_X = ""
-        self.number_X = self.state['X']
 
     @on( Button.Pressed, "#on" )
     async def calculator_post( self ) -> None:
