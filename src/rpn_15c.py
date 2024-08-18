@@ -8,8 +8,6 @@ looks like a real calculator.
 """
 
 import math
-from enum import Enum
-from asyncio import sleep
 from textual import events, on
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, Vertical, Grid
@@ -603,17 +601,17 @@ class RPN_CalculatorApp(App):
 
 
     @on( Button.Pressed, "#on" )
-    async def calculator_post( self ) -> None:
+    def calculator_post( self ) -> None:
         self.query_one("HP_Display").value = ""
         lcd_display = self.query(".lcd")
         lcd_display.add_class("active")
-        await sleep( 1.0 )
-        lcd_display.remove_class("active")
-        await sleep( 0.25 )
+        self.set_timer( 1, self.state_clear )
+        
+    def state_clear( self ) -> None:
+        lcd_display = self.query(".lcd").remove_class("active")
         self.state_reset()
         self.buffer_X = "" 
         self.number_X = float('nan')
-        
 
 if __name__ == "__main__":
     RPN_CalculatorApp().run()
