@@ -1,4 +1,5 @@
 # A TUI RPN Calculator with an HP 15C themed skin
+![rpn_15c](https://github.com/user-attachments/assets/7e1c69ef-1ae7-4168-b934-92cf934c6587)
 
 ## Quick Start
 
