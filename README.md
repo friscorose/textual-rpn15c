@@ -1,9 +1,10 @@
-# A TUI RPN Calculator with an HP 15C themed skin
+# A TUI RPN Calculator with an HP 15C theme
 ![rpn_15c](https://github.com/user-attachments/assets/7e1c69ef-1ae7-4168-b934-92cf934c6587)
+and yes, that is just text. Pretty sigma, eh!?
 
 ## Quick Start
 
-In a terminal emulator that is at least 126 characters wide and 31 characters tall perform the following steps:
+In a modern terminal emulator that is at least 126 characters wide and 31 characters tall perform the following steps:
 Clone this repo, create a pip environment, add textual and start rpn_15c.py with Python.
 
 Establish your TUI environment...
