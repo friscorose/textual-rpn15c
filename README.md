@@ -1,5 +1,6 @@
 # A TUI RPN Calculator with an HP 15C theme
 ![rpn_15c](https://github.com/user-attachments/assets/7e1c69ef-1ae7-4168-b934-92cf934c6587)
+
 and yes, that is just text. Pretty sigma, eh!?
 
 ## Quick Start
@@ -22,4 +23,8 @@ Start the calculator...
 $  source rpn_test_dir/.venv/bin/activate
 $  python rpn_test_dir/textual-rpn15c/src/rpn_15c.py
 $  deactivate 
+```
+or as a one liner...
+``` bash
+rpn_test_dir/.venv/bin/python rpn_test_dir/textual-rpn15c/src/rpn_15c.py
 ```
