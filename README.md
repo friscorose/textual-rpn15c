@@ -1,5 +1,5 @@
 # A TUI RPN Calculator with an HP 15C theme
-![rpn_15c](https://github.com/user-attachments/assets/7e1c69ef-1ae7-4168-b934-92cf934c6587)
+![rpn_15c](https://repository-images.githubusercontent.com/819673411/34048565-6900-495e-99ec-ec8fb407c32b)
 and yes, that is just text. Pretty sigma, eh!?
 
 ## Quick Start
