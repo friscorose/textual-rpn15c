@@ -24,7 +24,7 @@ $  source rpn_test_dir/.venv/bin/activate
 $  python rpn_test_dir/textual-rpn15c/src/rpn_15c.py
 $  deactivate 
 ```
-or as a one liner...
+or as a one liner.
 ``` bash
 rpn_test_dir/.venv/bin/python rpn_test_dir/textual-rpn15c/src/rpn_15c.py
 ```

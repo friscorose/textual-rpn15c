@@ -38,9 +38,6 @@ class HP_Display( Widget ):
                 Digits {
                     border-top: tall slategray 50%;
                 }
-                .digit .negative {
-                    width:3;
-                }
                 .separator {
                     width:1;
                 }
