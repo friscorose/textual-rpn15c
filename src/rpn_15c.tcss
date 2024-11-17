@@ -52,7 +52,7 @@
     #cluster {
         margin-top: -1;
         border-title-align: center;
-        border-top: blank $secondary;
+        border-top: blank $accent;
         column-span: 4;
         grid-size: 4;
     }
@@ -62,19 +62,19 @@
     }
 
     #shift-f {
-        background: $secondary-darken-1;
+        background: $accent-darken-1;
         color: black;
-        border-subtitle-background: $secondary-darken-3;
-        border-top: inner $secondary-darken-1;
-        border-bottom: thick $secondary-darken-3;
+        border-subtitle-background: $accent-darken-3;
+        border-top: inner $accent-darken-1;
+        border-bottom: thick $accent-darken-3;
     }
 
     #shift-g {
         background: $primary-lighten-3;
         color: black;
-        border-subtitle-background: $primary-lighten-2;
+        border-subtitle-background: $primary-lighten-1;
         border-top: inner $primary-lighten-3;
-        border-bottom: thick $primary-lighten-2;
+        border-bottom: thick $primary-lighten-1;
     }
 
     #on {
@@ -88,7 +88,7 @@
 
         border-top: wide $panel-lighten-2;
         border-title-align: center;
-        border-title-color: $secondary;
+        border-title-color: $accent;
         border-title-style: bold;
 
         border-bottom: thick $surface-darken-1;

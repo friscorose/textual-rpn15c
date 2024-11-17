@@ -21,6 +21,7 @@ class HP_Display( Widget ):
 
     DEFAULT_CSS = """
     HP_Display {
+        text-style: bold;
         margin-left: 16;
         height: 7;
         width:45;
@@ -94,7 +95,7 @@ class HP_Display( Widget ):
                     self.lcd_seps[idx].add_class("active")
                     buffer = buffer[1:]
                     n_chars -= 1
-                if n_chars and buffer[0] in '0123456789AbCdEF':
+                if n_chars and buffer[0] in '0123456789ABCDEF':
                     self.lcd_digs[idx].update( buffer[0] )
                     self.lcd_digs[idx].add_class("active")
                     buffer = buffer[1:]
@@ -396,7 +397,7 @@ class RPN_CalculatorApp(App):
                 self.number_X = self.state['X']
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X += 'b'
+                self.buffer_X += 'B'
             else:
                 self.enter_actions()
                 self.state['X'] = math.exp( self.pop_X() )
@@ -421,7 +422,7 @@ class RPN_CalculatorApp(App):
                 self.query_one( "#g-state" ).toggle_class( "active" )
             elif self.query_one( "#f-state" ).has_class("active"):
                 self.query_one( "#f-state" ).toggle_class( "active" )
-                self.buffer_X += 'd'
+                self.buffer_X += 'D'
             else:
                 self.enter_actions()
                 self.state['X'] = self.pop_Y()**self.pop_X() 
