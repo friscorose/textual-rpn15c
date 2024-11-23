@@ -10,3 +10,7 @@ dependencies = [
 
 [project.scripts]
 rpn_15c = "textual-rpn_15c:main_cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
