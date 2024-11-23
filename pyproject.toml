@@ -1,0 +1,10 @@
+[project]
+name = "textual-rpn15c"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+rpn_15c = "textual-rpn_15c:main_cli"

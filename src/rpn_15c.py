@@ -611,5 +611,8 @@ class RPN_CalculatorApp(App):
         self.buffer_X = "" 
         self.number_X = float('nan')
 
+    def main_cli( self ) -> None:
+        RPN_CalculatorApp().run()
+
 if __name__ == "__main__":
-    RPN_CalculatorApp().run()
+    main_cli()
