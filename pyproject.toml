@@ -1,5 +1,5 @@
 [project]
-name = "textual-rpn15c"
+name = "textual_rpn15c"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
