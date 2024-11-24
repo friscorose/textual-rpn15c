@@ -13,6 +13,15 @@ If you already have `uvx` skip this step ->
 ### Run the calculator
 `uvx --from git+https://github.com/friscorose/textual-rpn15c.git rpn-15c`
 
+### Or install into your env
+```bash
+uv tool install --from git+https://github.com/friscorose/textual-rpn15c.git textual-rpn15c
+```
+then run straight from your CLI
+```bash
+rpn-15c
+```
+
 ## The older method
 Clone this repo, create a pip environment, add textual and start rpn_15c.py with Python.
 
