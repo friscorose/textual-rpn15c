@@ -6,9 +6,17 @@ and yes, that is just text. Pretty sigma, eh!?
 ## Quick Start
 
 In a modern terminal emulator that is at least 126 characters wide and 31 characters tall perform the following steps:
+###Establish uv/uvx
+If you already have `uvx` skip this step
+`pipx install uvx`
+
+###Run the calculator
+`uvx --from git+https://github.com/friscorose/textual-rpn15c.git rpn-15c`
+
+##The older method
 Clone this repo, create a pip environment, add textual and start rpn_15c.py with Python.
 
-Establish your TUI environment...
+Establish your TUI environment... do this only once
 ``` bash
 $  echo $COLUMNS
 $  echo $LINES
@@ -21,10 +29,10 @@ $  .venv/bin/python -m pip install textual
 Start the calculator...
 ``` bash
 $  source rpn_test_dir/.venv/bin/activate
-$  python rpn_test_dir/textual-rpn15c/src/rpn_15c.py
+$  python rpn_test_dir/textual-rpn15c/src/textual_rpn15c/rpn_15c.py
 $  deactivate 
 ```
 or as a one liner.
 ``` bash
-rpn_test_dir/.venv/bin/python rpn_test_dir/textual-rpn15c/src/rpn_15c.py
+rpn_test_dir/.venv/bin/python rpn_test_dir/textual-rpn15c/src/textual_rpn15c/rpn_15c.py
 ```
