@@ -6,14 +6,14 @@ and yes, that is just text. Pretty sigma, eh!?
 ## Quick Start
 
 In a modern terminal emulator that is at least 126 characters wide and 31 characters tall perform the following steps:
-###Establish uv/uvx
+### Establish uv/uvx
 If you already have `uvx` skip this step
 `pipx install uvx`
 
-###Run the calculator
+### Run the calculator
 `uvx --from git+https://github.com/friscorose/textual-rpn15c.git rpn-15c`
 
-##The older method
+## The older method
 Clone this repo, create a pip environment, add textual and start rpn_15c.py with Python.
 
 Establish your TUI environment... do this only once
