@@ -103,13 +103,13 @@ wheels = [
 [[package]]
 name = "textual-rpn15c"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "textual" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "textual", specifier = ">=0.82.0" }]
+requires-dist = [{ name = "textual", specifier = ">=0.86.3" }]
 
 [[package]]
 name = "typing-extensions"

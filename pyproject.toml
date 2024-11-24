@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-rpn-15c = "textual_rpn_15c:main"
+rpn-15c = "textual_rpn15c:main"
 
 [build-system]
 requires = ["hatchling"]
