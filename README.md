@@ -8,7 +8,7 @@ and yes, that is just text. Pretty sigma, eh!?
 In a modern terminal emulator that is at least 126 characters wide and 31 characters tall perform the following steps:
 ### Establish uv/uvx
 If you already have `uvx` skip this step ->
-`pipx install uvx`
+`pipx install uv uvx`
 
 ### Run the calculator
 `uvx --from git+https://github.com/friscorose/textual-rpn15c.git rpn-15c`
